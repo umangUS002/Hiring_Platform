@@ -30,18 +30,11 @@ export const createReferral = async (req, res) => {
       });
     }
 
-    // 📂 Upload Resume to ImageKit
-    const fileBuffer = fs.readFileSync(resumeFile.path);
-
     const uploadResponse = await imagekit.upload({
-      file: fileBuffer,
+      file: resumeFile.buffer,   // ✅ Direct buffer
       fileName: resumeFile.originalname,
       folder: "/Hiring_Platform/Resumes"
     });
-
-    // Delete local file after upload
-    fs.unlinkSync(resumeFile.path);
-
     const resumeUrl = uploadResponse.url;
 
     // 🔐 Generate Verification Token
