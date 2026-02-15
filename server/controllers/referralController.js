@@ -1,7 +1,6 @@
 import imagekit from "../configs/imageKit.js";
 import Referral from "../models/Referral.js";
 import User from "../models/User.js";
-import fs from "fs";
 import crypto from "crypto";
 import { sendVerificationEmail, sendRegisterEmail } from "../services/emailService.js";
 
