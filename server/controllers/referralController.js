@@ -35,7 +35,7 @@ export const createReferral = async (req, res) => {
         // Upload image to imageKit
         const response = await imagekit.upload({
             file: fileBuffer,
-            fileName: imageFile.originalname,
+            fileName: resumeFile.originalname,
             folder: "/Hiring_Platform"
         })
 
