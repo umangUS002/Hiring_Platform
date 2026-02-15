@@ -10,6 +10,7 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import SubmitReferral from './pages/Referrer/AddReferral';
 import AllReferrals from './pages/Referrer/AllReferrals';
 import VerifyCandidate from './pages/VerifyCandidate';
+import Register from './pages/Seeker/Register';
 
 function App() {
   const { showLogin, token, role } = useContext(AppContext);
@@ -41,6 +42,7 @@ function App() {
         )}
         
         <Route path="/verify/:token" element={<VerifyCandidate />} />
+        <Route path="/register/:token" element={<Register />} />
 
       </Routes>
 
