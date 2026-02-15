@@ -14,7 +14,7 @@ export const sendVerificationEmail = async (email, token) => {
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Verify Your Referral",
+    subject: "Verify Your Referral" ,
     html: `
       <h3>You were referred!</h3>
       <p>Click below to verify:</p>
