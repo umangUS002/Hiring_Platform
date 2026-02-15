@@ -3,6 +3,7 @@ import Referral from "../models/Referral.js";
 import User from "../models/User.js";
 import crypto from "crypto";
 import { sendVerificationEmail, sendRegisterEmail } from "../services/emailService.js";
+import fs from "fs";
 
 export const createReferral = async (req, res) => {
   try {
@@ -28,13 +29,27 @@ export const createReferral = async (req, res) => {
         message: "Duplicate referral"
       });
     }
+    
+    const fileBuffer = fs.readFileSync(resumeFile.path)
 
-    const uploadResponse = await imagekit.upload({
-      file: resumeFile.buffer,   // ✅ Direct buffer
-      fileName: resumeFile.originalname,
-      folder: "/Hiring_Platform/Resumes"
-    });
-    const resumeUrl = uploadResponse.url;
+        // Upload image to imageKit
+        const response = await imagekit.upload({
+            file: fileBuffer,
+            fileName: imageFile.originalname,
+            folder: "/Hiring_Platform"
+        })
+
+        // Optimization through imageKit URL transformation
+        const optimizedImageUrl = imagekit.url({
+            path: response.filePath,
+            transformation: [
+                { quality: 'auto' },  // Auto compression
+                { format: 'webp' },   // Convert to modern format
+                { width: '1280' }      // Width resizing
+            ]
+        })
+
+        const resumeUrl = optimizedImageUrl;
 
     // 🔐 Generate Verification Token
     const token = crypto.randomBytes(32).toString("hex");
