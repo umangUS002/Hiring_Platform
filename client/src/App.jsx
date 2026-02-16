@@ -20,6 +20,7 @@ function App() {
       <ToastContainer />
 
       <Routes>
+
         <Route path="/" element={showLogin ? <Login /> : <></>} />
 
         {token && role === "Admin" && (
@@ -43,6 +44,8 @@ function App() {
         
         <Route path="/verify/:token" element={<VerifyCandidate />} />
         <Route path="/register/:token" element={<Register />} />
+
+        <Route path="*" element={<h1>Page Not Found</h1>} />
 
       </Routes>
 
