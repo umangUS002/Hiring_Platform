@@ -45,7 +45,6 @@ export const register = async (req, res) => {
   try {
     const { name, email, password, role, token } = req.body;
 
-    // 🔎 Check if user already exists
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -55,7 +54,6 @@ export const register = async (req, res) => {
       });
     }
 
-    // 🆕 Create user
     const user = await User.create({
       name,
       email,
@@ -63,7 +61,7 @@ export const register = async (req, res) => {
       role: role || "Seeker"
     });
 
-    // 🔥 If registration came from referral email
+    // If registration via referral token
     if (token) {
 
       const referral = await Referral.findOne({
@@ -72,22 +70,22 @@ export const register = async (req, res) => {
       });
 
       if (referral) {
-        referral.status = "Verified";
+        // Only link candidate
         referral.candidateId = user._id;
-        referral.verificationToken = undefined;
-        referral.tokenExpiry = undefined;
-
         await referral.save();
       }
     }
 
-    // 🔐 Generate JWT
     const jwtToken = generateToken(user._id);
 
     res.status(201).json({
       success: true,
       token: jwtToken,
-      user
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role
+      }
     });
 
   } catch (error) {
