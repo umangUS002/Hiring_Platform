@@ -49,12 +49,7 @@ function CompleteProfile() {
 
       await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/referral/complete/${token}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }
+        formData
       );
 
       toast.success("Profile completed successfully!");
