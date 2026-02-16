@@ -125,36 +125,25 @@ export const verifyCandidate = async (req, res) => {
     if (!referral) {
       return res.status(400).json({
         success: false,
-        message: "Invalid or expired verification link"
-      });
-    }
-
-    if (referral.candidateId) {
-      return res.json({
-        success: true,
-        alreadyRegistered: true,
-        token
+        message: "Invalid or expired link"
       });
     }
 
     return res.json({
       success: true,
-      needsRegistration: true,
+      candidateId: referral.candidateId,
       token
     });
 
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    res.status(500).json({ success: false });
   }
 };
 
 export const completeReferral = async (req, res) => {
   try {
     const { token } = req.params;
-    const { skills } = req.body;
+    const { skills, experience, currComp } = req.body;
 
     const referral = await Referral.findOne({
       verificationToken: token,
@@ -180,7 +169,10 @@ export const completeReferral = async (req, res) => {
     }
 
     referral.skills = skills ? skills.split(",") : [];
+    referral.experience = experience;
+    referral.currComp = currComp;
     referral.status = "Verified";
+
     referral.verificationToken = undefined;
     referral.tokenExpiry = undefined;
 
@@ -192,13 +184,38 @@ export const completeReferral = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    res.status(500).json({ success: false });
   }
 };
-;
+
+export const getReferralByToken = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    const referral = await Referral.findOne({
+      verificationToken: token,
+      tokenExpiry: { $gt: Date.now() }
+    });
+
+    if (!referral) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired token"
+      });
+    }
+
+    res.json({
+      success: true,
+      referral
+    });
+
+  } catch (error) {
+    res.status(500).json({ success: false });
+  }
+};
+
+
+
 
 
 

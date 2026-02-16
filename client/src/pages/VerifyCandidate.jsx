@@ -13,16 +13,28 @@ function VerifyCandidate() {
           `${backendUrl}/api/referral/verify/${token}`
         );
 
-        if (data.success) {
-          toast.success("Verification Successful");
+        if (!data.success) return;
+
+        // If candidate already registered
+        if (data.candidateId) {
+
+          // If not logged in → go to login
+          if (!localStorage.getItem("token")) {
+            navigate(`/login?redirect=/complete-profile/${token}`);
+          } else {
+            navigate(`/complete-profile/${token}`);
+          }
+
         }
+
       } catch (error) {
-        toast.error("Invalid or Expired Link");
+        toast.error("Invalid or expired link");
       }
     };
 
     verify();
   }, [token]);
+
 
   return <h2>Verifying Candidate...</h2>;
 }

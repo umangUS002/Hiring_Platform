@@ -1,5 +1,5 @@
 import express from "express";
-import { completeReferral, createReferral, getAllReferrals, verifyCandidate } from "../controllers/referralController.js";
+import { completeReferral, createReferral, getAllReferrals, getReferralByToken, verifyCandidate } from "../controllers/referralController.js";
 import { protect } from "../middlewares/auth.js";
 import upload from "../middlewares/multer.js";
 
@@ -9,5 +9,6 @@ referralRouter.post("/submitReferal", protect, upload.single("resume"), createRe
 referralRouter.get("/all", protect, getAllReferrals);
 referralRouter.get("/verify/:token", verifyCandidate);
 referralRouter.post("/complete/:token", upload.single("resume"), completeReferral);
+referralRouter.get("/details/:token", getReferralByToken);
 
 export default referralRouter;
