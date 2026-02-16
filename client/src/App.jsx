@@ -12,6 +12,7 @@ import AllReferrals from './pages/Referrer/AllReferrals';
 import VerifyCandidate from './pages/VerifyCandidate';
 import Register from './pages/Seeker/Register';
 import CompleteProfile from './pages/Recruiter/CompleteProfile';
+import ReferralLogin from './pages/Seeker/ReferralLogin';
 
 function App() {
   const { showLogin, token, role } = useContext(AppContext);
@@ -47,6 +48,7 @@ function App() {
         
         <Route path="/verify/:token" element={<VerifyCandidate />} />
         <Route path="/register/:token" element={<Register />} />
+        <Route path="/referral-login/:token" element={<ReferralLogin />} />
 
         <Route path="*" element={<h1>Page Not Found</h1>} />
 
