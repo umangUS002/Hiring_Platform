@@ -39,7 +39,12 @@ function Register() {
 
         toast.success("Registration Successful");
 
-        navigate("/seekerDash");   // Redirect after register
+        if (token) {
+          navigate(`/complete-profile/${token}`);
+        } else {
+          navigate("/seekerDash");
+        }
+
 
       } else {
         toast.error(data.message);
@@ -52,7 +57,7 @@ function Register() {
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center">
-      
+
       <form
         onSubmit={onSubmitHandler}
         className="relative bg-white p-10 rounded-xl text-slate-500 w-96"

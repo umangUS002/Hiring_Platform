@@ -102,7 +102,6 @@ export const createReferral = async (req, res) => {
   }
 };
 
-
 export const getAllReferrals = async (req, res) => {
   try {
     const referrals = await Referral.find({})
@@ -130,24 +129,18 @@ export const verifyCandidate = async (req, res) => {
       });
     }
 
-    // If candidate already registered
     if (referral.candidateId) {
-      referral.status = "Verified";
-      referral.verificationToken = undefined;
-      referral.tokenExpiry = undefined;
-      await referral.save();
-
       return res.json({
         success: true,
-        message: "Referral verified successfully"
+        alreadyRegistered: true,
+        token
       });
     }
 
-    // If candidate not registered yet
     return res.json({
       success: true,
       needsRegistration: true,
-      message: "Please register to complete verification"
+      token
     });
 
   } catch (error) {
@@ -157,6 +150,55 @@ export const verifyCandidate = async (req, res) => {
     });
   }
 };
+
+export const completeReferral = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { skills } = req.body;
+
+    const referral = await Referral.findOne({
+      verificationToken: token,
+      tokenExpiry: { $gt: Date.now() }
+    });
+
+    if (!referral) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired token"
+      });
+    }
+
+    // Optional resume re-upload
+    if (req.file) {
+      const uploadResponse = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: req.file.originalname,
+        folder: "/Hiring_Platform/Resumes"
+      });
+
+      referral.resumeUrl = uploadResponse.url;
+    }
+
+    referral.skills = skills ? skills.split(",") : [];
+    referral.status = "Verified";
+    referral.verificationToken = undefined;
+    referral.tokenExpiry = undefined;
+
+    await referral.save();
+
+    res.json({
+      success: true,
+      message: "Referral verified successfully"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+;
 
 
 

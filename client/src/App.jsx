@@ -11,6 +11,7 @@ import SubmitReferral from './pages/Referrer/AddReferral';
 import AllReferrals from './pages/Referrer/AllReferrals';
 import VerifyCandidate from './pages/VerifyCandidate';
 import Register from './pages/Seeker/Register';
+import CompleteProfile from './pages/Recruiter/CompleteProfile';
 
 function App() {
   const { showLogin, token, role } = useContext(AppContext);
@@ -41,6 +42,8 @@ function App() {
             <Route path='all-referrals' element={<AllReferrals />} /> 
           </Route>
         )}
+
+        <Route path="/complete-profile/:token" element={<CompleteProfile />} />
         
         <Route path="/verify/:token" element={<VerifyCandidate />} />
         <Route path="/register/:token" element={<Register />} />
