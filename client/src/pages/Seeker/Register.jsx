@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import { AppContext } from "../../context/AppContext";
 
 function Register() {
 
