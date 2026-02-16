@@ -29,27 +29,27 @@ export const createReferral = async (req, res) => {
         message: "Duplicate referral"
       });
     }
-    
+
     const fileBuffer = fs.readFileSync(resumeFile.path)
 
-        // Upload image to imageKit
-        const response = await imagekit.upload({
-            file: fileBuffer,
-            fileName: resumeFile.originalname,
-            folder: "/Hiring_Platform"
-        })
+    // Upload image to imageKit
+    const response = await imagekit.upload({
+      file: fileBuffer,
+      fileName: resumeFile.originalname,
+      folder: "/Hiring_Platform"
+    })
 
-        // Optimization through imageKit URL transformation
-        const optimizedImageUrl = imagekit.url({
-            path: response.filePath,
-            transformation: [
-                { quality: 'auto' },  // Auto compression
-                { format: 'webp' },   // Convert to modern format
-                { width: '1280' }      // Width resizing
-            ]
-        })
+    // Optimization through imageKit URL transformation
+    const optimizedImageUrl = imagekit.url({
+      path: response.filePath,
+      transformation: [
+        { quality: 'auto' },  // Auto compression
+        { format: 'webp' },   // Convert to modern format
+        { width: '1280' }      // Width resizing
+      ]
+    })
 
-        const resumeUrl = optimizedImageUrl;
+    const resumeUrl = optimizedImageUrl;
 
     // 🔐 Generate Verification Token
     const token = crypto.randomBytes(32).toString("hex");
@@ -159,19 +159,33 @@ export const completeReferral = async (req, res) => {
 
     // Optional resume re-upload
     if (req.file) {
-      const uploadResponse = await imagekit.upload({
-        file: req.file.buffer,
-        fileName: req.file.originalname,
-        folder: "/Hiring_Platform/Resumes"
-      });
+      const resumeFile = req.file;
+      const fileBuffer = fs.readFileSync(resumeFile.path)
 
-      referral.resumeUrl = uploadResponse.url;
+      // Upload image to imageKit
+      const response = await imagekit.upload({
+        file: fileBuffer,
+        fileName: resumeFile.originalname,
+        folder: "/Hiring_Platform"
+      })
+
+      // Optimization through imageKit URL transformation
+      const optimizedImageUrl = imagekit.url({
+        path: response.filePath,
+        transformation: [
+          { quality: 'auto' },  // Auto compression
+          { format: 'webp' },   // Convert to modern format
+          { width: '1280' }      // Width resizing
+        ]
+      })
+
+      referral.resumeUrl = optimizedImageUrl;
     }
 
     referral.skills = skills ? skills.split(",") : [];
     referral.experience = experience;
     referral.currComp = currComp;
-    referral.status = "Verified";
+    referral.status = "verified";
 
     referral.verificationToken = undefined;
     referral.tokenExpiry = undefined;
