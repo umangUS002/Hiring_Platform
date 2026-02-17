@@ -36,3 +36,29 @@ export const takeAction = async (req, res) => {
     });
   }
 };
+
+
+export const getMyActions = async (req, res) => {
+  try {
+
+    const actions = await RecruiterAction.find({
+      recruiterId: req.user._id
+    })
+      .populate({
+        path: "referralId",
+        select: "name email experience skills resumeUrl status"
+      })
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      actions
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
