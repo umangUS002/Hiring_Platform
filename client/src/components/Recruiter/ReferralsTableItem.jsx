@@ -7,11 +7,12 @@ function ReferralsTableItem({ referral, index }) {
 
     const { backendUrl, token, fetchReferralsRec } = useContext(AppContext);
 
-    const updateStatus = async (status) => {
+    const takeDecision = async (decision) => {
         try {
-            await axios.put(
-                `${backendUrl}/api/referral/status/${referral._id}`,
-                { status },
+
+            await axios.post(
+                `${backendUrl}/api/recruiter/action/${referral._id}`,
+                { decision },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -19,13 +20,14 @@ function ReferralsTableItem({ referral, index }) {
                 }
             );
 
-            toast.success("Status updated");
+            toast.success("Decision saved");
             fetchReferralsRec();
 
         } catch (error) {
             toast.error("Failed to update");
         }
     };
+
 
     return (
         <tr className='border-b hover:bg-gray-50'>
@@ -51,6 +53,17 @@ function ReferralsTableItem({ referral, index }) {
                 {referral.status}
             </td>
 
+            <td className="px-4 py-3">
+                {referral.myDecision ? (
+                    <span className="text-sm font-semibold capitalize">
+                        {referral.myDecision}
+                    </span>
+                ) : (
+                    <span className="text-gray-400">No Action</span>
+                )}
+            </td>
+
+
             <td className='px-4 py-3'>
                 <a
                     href={referral.resumeUrl}
@@ -64,18 +77,26 @@ function ReferralsTableItem({ referral, index }) {
             <td className='px-4 py-3 space-x-2'>
 
                 <button
-                    onClick={() => updateStatus("shortlisted")}
-                    className='bg-green-600 text-white px-3 py-1 rounded text-xs'
+                    onClick={() => takeDecision("shortlisted")}
+                    className="bg-green-600 text-white px-3 py-1 rounded text-xs"
                 >
                     Shortlist
                 </button>
 
                 <button
-                    onClick={() => updateStatus("rejected")}
-                    className='bg-red-600 text-white px-3 py-1 rounded text-xs'
+                    onClick={() => takeDecision("rejected")}
+                    className="bg-red-600 text-white px-3 py-1 rounded text-xs"
                 >
                     Reject
                 </button>
+
+                <button
+                    onClick={() => takeDecision("hold")}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded text-xs"
+                >
+                    Hold
+                </button>
+
 
             </td>
 

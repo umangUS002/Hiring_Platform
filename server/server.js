@@ -4,6 +4,7 @@ import connectDB from "./configs/db.js";
 import authRouter from "./routes/authRoutes.js";
 import cors from "cors"
 import referralRouter from "./routes/referralRoutes.js";
+import recruiterActionrouter from './routes/recruiterActionsRoutes.js';
 
 connectDB();
 
@@ -17,6 +18,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/referral", referralRouter);
+app.use("/api/recruiter", recruiterActionrouter);
+
 // app.use("/api/recruiter", recruiterRoutes);
 
 const PORT = process.env.PORT || 5000;

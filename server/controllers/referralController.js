@@ -235,34 +235,59 @@ export const getReferralByToken = async (req, res) => {
 export const filterReferrals = async (req, res) => {
   try {
 
-    const { skill, experience, referrer } = req.query;
+    const referrals = await Referral.find({
+      status: "verified"
+    });
 
-    let filter = {
-      status: "verified"   // 🔥 Only verified candidates
-    };
+    const actions = await RecruiterAction.find({
+      recruiterId: req.user._id
+    });
 
-    // 🔎 Filter by skill
-    if (skill) {
-      filter.skills = { $in: [skill.toLowerCase()] };
-    }
+    const actionMap = {};
 
-    // 🔎 Filter by minimum experience
-    if (experience) {
-      filter.experience = { $gte: Number(experience) };
-    }
+    actions.forEach(action => {
+      actionMap[action.referralId] = action.decision;
+    });
 
-    // 🔎 Filter by referrer
-    if (referrer) {
-      filter.referrerId = referrer;
-    }
-
-    const referrals = await Referral.find(filter)
-      .populate("referrerId", "name email")
-      .sort({ createdAt: -1 });
+    const enrichedReferrals = referrals.map(ref => ({
+      ...ref._doc,
+      myDecision: actionMap[ref._id] || null
+    }));
 
     res.json({
       success: true,
-      referrals
+      referrals: enrichedReferrals
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const updateReferralStatus = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const referral = await Referral.findById(id);
+
+    if (!referral) {
+      return res.status(404).json({
+        success: false,
+        message: "Referral not found"
+      });
+    }
+
+    referral.status = status;
+    await referral.save();
+
+    res.json({
+      success: true,
+      message: "Status updated successfully"
     });
 
   } catch (error) {

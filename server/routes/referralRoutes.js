@@ -1,5 +1,5 @@
 import express from "express";
-import { completeReferral, createReferral, filterReferrals, getAllReferrals, getReferralByToken, verifyCandidate } from "../controllers/referralController.js";
+import { completeReferral, createReferral, filterReferrals, getAllReferrals, getReferralByToken, updateReferralStatus, verifyCandidate } from "../controllers/referralController.js";
 import { protect, recruiterOnly } from "../middlewares/auth.js";
 import upload from "../middlewares/multer.js";
 
@@ -13,5 +13,6 @@ referralRouter.get("/details/:token", getReferralByToken);
 
 // routes/referralRoutes.js
 referralRouter.get("/filter", protect, recruiterOnly, filterReferrals);
+referralRouter.put("/status/:id", protect, recruiterOnly, updateReferralStatus);
 
 export default referralRouter;

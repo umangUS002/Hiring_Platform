@@ -89,7 +89,7 @@ export const AppContextProvider = (props) => {
     }, []);
 
     useEffect(() => {
-        fetchReferrals(); fetchReferralsRec();
+        fetchReferrals();
     }, []);
 
     const value = {
