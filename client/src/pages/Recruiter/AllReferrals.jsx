@@ -60,7 +60,8 @@ function AllReferralsRec() {
                             <th className='px-4 py-4'>Name</th>
                             <th className='px-4 py-4'>Experience</th>
                             <th className='px-4 py-4'>Skills</th>
-                            <th className='px-4 py-4'>Status</th>
+                            <th className='px-4 py-4'>Candidate Status</th>
+                            <th className='px-4 py-4'>Recruiter Status</th>
                             <th className='px-4 py-4'>Resume</th>
                             <th className='px-4 py-4'>Action</th>
                         </tr>

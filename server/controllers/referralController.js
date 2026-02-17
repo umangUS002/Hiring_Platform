@@ -4,6 +4,7 @@ import User from "../models/User.js";
 import crypto from "crypto";
 import { sendVerificationEmail, sendRegisterEmail } from "../services/emailService.js";
 import fs from "fs";
+import RecruiterAction from "../models/RecruiterAction.js";
 
 export const createReferral = async (req, res) => {
   try {

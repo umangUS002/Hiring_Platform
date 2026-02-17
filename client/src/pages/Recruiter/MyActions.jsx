@@ -79,8 +79,27 @@ function MyActions() {
                     ))}
                   </td>
 
-                  <td className="px-4 py-3 capitalize font-semibold">
-                    {action.decision}
+                  <td className="px-4 py-3">
+                    {action.decision ? (
+                      <span
+                        className={`px-3 py-1 text-xs font-semibold rounded-full capitalize
+        ${action.decision === "shortlisted"
+                            ? "bg-green-100 text-green-700"
+                            : action.decision === "rejected"
+                              ? "bg-red-100 text-red-700"
+                              : action.decision === "hold"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-gray-100 text-gray-700"
+                          }
+      `}
+                      >
+                        {action.decision}
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-500">
+                        No Action
+                      </span>
+                    )}
                   </td>
 
                   <td className="px-4 py-3">
