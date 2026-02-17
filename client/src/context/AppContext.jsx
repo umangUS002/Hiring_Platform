@@ -52,26 +52,29 @@ export const AppContextProvider = (props) => {
     };
 
 
-    const fetchReferralsRec = async (skill = "", exp = "") => {
-        try {
-            const { data } = await axios.get(
-                `${backendUrl}/api/referral/filter`,
-                {
-                    params: { skill, experience: exp },
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+    const fetchReferralsRec = async (skill = "", experience = "") => {
+    try {
+        const { data } = await axios.get(
+            `${backendUrl}/api/referral/filter`,
+            {
+                params: {
+                    skill,
+                    experience
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-            );
-
-            if (data.success) {
-                setReferralsRec(data.referrals);
             }
+        );
 
-        } catch (error) {
-            toast.error("Failed to fetch referrals");
+        if (data.success) {
+            setReferralsRec(data.referrals);
         }
-    };
+
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to filter referrals");
+    }
+};
 
 
 

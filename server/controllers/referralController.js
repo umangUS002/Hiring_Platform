@@ -235,24 +235,37 @@ export const getReferralByToken = async (req, res) => {
 
 export const filterReferrals = async (req, res) => {
   try {
+    const { skill, experience } = req.query;
 
-    const referrals = await Referral.find({
+    let query = {
       status: "verified"
-    });
+    };
 
+    // 🔹 Filter by skill (array field)
+    if (skill) {
+      query.skills = { $in: [skill.toLowerCase()] };
+    }
+
+    // 🔹 Filter by minimum experience
+    if (experience) {
+      query.experience = { $gte: Number(experience) };
+    }
+
+    const referrals = await Referral.find(query);
+
+    // Get recruiter decisions
     const actions = await RecruiterAction.find({
       recruiterId: req.user._id
     });
 
     const actionMap = {};
-
     actions.forEach(action => {
-      actionMap[action.referralId] = action.decision;
+      actionMap[action.referralId.toString()] = action.decision;
     });
 
     const enrichedReferrals = referrals.map(ref => ({
       ...ref._doc,
-      myDecision: actionMap[ref._id] || null
+      myDecision: actionMap[ref._id.toString()] || null
     }));
 
     res.json({
@@ -267,6 +280,7 @@ export const filterReferrals = async (req, res) => {
     });
   }
 };
+
 
 export const updateReferralStatus = async (req, res) => {
   try {
