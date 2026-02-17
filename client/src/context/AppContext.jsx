@@ -23,6 +23,7 @@ export const AppContextProvider = (props) => {
     const [role, setRole] = useState("");
 
     const [referrals, setReferrals] = useState([]);
+    const [referralsRec, setReferralsRec] = useState([]);
 
     const fetchReferrals = async () => {
         try {
@@ -50,6 +51,30 @@ export const AppContextProvider = (props) => {
         }
     };
 
+
+    const fetchReferralsRec = async (skill = "", exp = "") => {
+        try {
+            const { data } = await axios.get(
+                `${backendUrl}/api/referral/filter`,
+                {
+                    params: { skill, experience: exp },
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (data.success) {
+                setReferralsRec(data.referrals);
+            }
+
+        } catch (error) {
+            toast.error("Failed to fetch referrals");
+        }
+    };
+
+
+
     useEffect(() => {
         const savedToken = localStorage.getItem("token");
         const savedRole = localStorage.getItem("role");
@@ -64,12 +89,12 @@ export const AppContextProvider = (props) => {
     }, []);
 
     useEffect(() => {
-        fetchReferrals();
+        fetchReferrals(); fetchReferralsRec();
     }, []);
 
     const value = {
         showLogin, setShowLogin, token, setToken, role, setRole,
-        backendUrl, referrals, fetchReferrals, axios: axiosInstance
+        backendUrl, referrals, fetchReferrals, axios: axiosInstance, referralsRec, fetchReferralsRec
     }
 
     return (

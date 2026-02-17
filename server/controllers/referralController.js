@@ -182,7 +182,10 @@ export const completeReferral = async (req, res) => {
       referral.resumeUrl = optimizedImageUrl;
     }
 
-    referral.skills = skills ? skills.split(",") : [];
+    referral.skills = skills
+  ? skills.split(",")
+      .map(skill => skill.trim().toLowerCase())
+  : [];
     referral.experience = experience;
     referral.currComp = currComp;
     referral.status = "verified";
@@ -227,6 +230,50 @@ export const getReferralByToken = async (req, res) => {
     res.status(500).json({ success: false });
   }
 };
+
+
+export const filterReferrals = async (req, res) => {
+  try {
+
+    const { skill, experience, referrer } = req.query;
+
+    let filter = {
+      status: "verified"   // 🔥 Only verified candidates
+    };
+
+    // 🔎 Filter by skill
+    if (skill) {
+      filter.skills = { $in: [skill.toLowerCase()] };
+    }
+
+    // 🔎 Filter by minimum experience
+    if (experience) {
+      filter.experience = { $gte: Number(experience) };
+    }
+
+    // 🔎 Filter by referrer
+    if (referrer) {
+      filter.referrerId = referrer;
+    }
+
+    const referrals = await Referral.find(filter)
+      .populate("referrerId", "name email")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      referrals
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+
 
 
 

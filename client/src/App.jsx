@@ -13,6 +13,8 @@ import VerifyCandidate from './pages/VerifyCandidate';
 import Register from './pages/Seeker/Register';
 import CompleteProfile from './pages/Recruiter/CompleteProfile';
 import ReferralLogin from './pages/Seeker/ReferralLogin';
+import MyActions from './pages/Recruiter/MyActions';
+import AllReferralsRec from './pages/Recruiter/AllReferrals';
 
 function App() {
   const { showLogin, token, role } = useContext(AppContext);
@@ -30,7 +32,11 @@ function App() {
         )}
 
         {token && role === "Recruiter" && (
-          <Route path="/recruiterDash" element={<RecruiterDashBoard />} />
+          <Route path="/recruiterDash" element={<RecruiterDashBoard />} >
+            <Route path='my-actions' element={<MyActions />} /> 
+            <Route path='all-referrals' element={<AllReferralsRec />} /> 
+          </Route>
+          
         )}
 
         {token && role === "Seeker" && (

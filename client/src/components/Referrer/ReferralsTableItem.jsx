@@ -59,7 +59,7 @@ function ReferralsTableItem({ ref, fetchReferrals, index }) {
   return (
     <tr className='border-y border-gray-300'>
       <th className='px-2 py-4'>{index}</th>
-      <th className='px-2 py-4'>{candidateId}</th>
+      {/* <th className='px-2 py-4'>{candidateId}</th> */}
       <td className='px-2 py-4'>{name}</td>
       <td className='px-2 py-4'>{contact}</td>
       <td className='px-2 py-4'>{email}</td>
@@ -74,7 +74,16 @@ function ReferralsTableItem({ ref, fetchReferrals, index }) {
             status.slice(1)}
         </span>
       </td>
-      <td className='px-2 py-4'>{resumeUrl}</td>
+      <td className="px-2 py-4">
+        <a
+          href={resumeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline"
+        >
+          Resume
+        </a>
+      </td>
 
       {/* <td className='px-2 py-4 flex text-xs gap-3'>
             <button onClick={togglePublish} className='border px-2 py-0.5 mt-1 rounded cursor-pointer'>
