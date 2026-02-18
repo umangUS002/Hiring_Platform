@@ -15,6 +15,7 @@ import CompleteProfile from './pages/Recruiter/CompleteProfile';
 import ReferralLogin from './pages/Seeker/ReferralLogin';
 import MyActions from './pages/Recruiter/MyActions';
 import AllReferralsRec from './pages/Recruiter/AllReferrals';
+import MyReferrals from './pages/Seeker/MyReferrals';
 
 function App() {
   const { showLogin, token, role } = useContext(AppContext);
@@ -40,7 +41,9 @@ function App() {
         )}
 
         {token && role === "Seeker" && (
-          <Route path="/seekerDash" element={<SeekerDashboard />} />
+          <Route path="/seekerDash" element={<SeekerDashboard />} >
+            <Route path='my-referrals' element={<MyReferrals/>} />
+          </Route>
         )}
 
         {token && role === "Referer" && (

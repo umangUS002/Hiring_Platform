@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext';
 function Login() {
 
     const navigate = useNavigate();
-    const { setShowLogin, backendUrl, token, setToken, role, setRole } = useContext(AppContext);
+    const { setShowLogin, backendUrl, token, setToken, role, setRole, setNamee } = useContext(AppContext);
 
     const [state, setState] = useState('Login');
     const [name, setName] = useState('');
@@ -32,7 +32,9 @@ function Login() {
 
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("role", data.user.role);
+                    localStorage.setItem("name", data.user.name);
 
+                    setNamee(data.user.name);
                     setToken(data.token);
                     setRole(data.user.role);
 
@@ -63,7 +65,9 @@ function Login() {
 
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("role", data.user.role);
+                    localStorage.setItem("name", data.user.name);
 
+                    setNamee(data.user.name);
                     setToken(data.token);
                     setRole(data.user.role);
 

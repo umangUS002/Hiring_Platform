@@ -232,7 +232,7 @@ export const getReferralByToken = async (req, res) => {
   }
 };
 
-
+// For recruiters
 export const filterReferrals = async (req, res) => {
   try {
     const { skill, experience } = req.query;
@@ -281,7 +281,6 @@ export const filterReferrals = async (req, res) => {
   }
 };
 
-
 export const updateReferralStatus = async (req, res) => {
   try {
 
@@ -312,6 +311,38 @@ export const updateReferralStatus = async (req, res) => {
     });
   }
 };
+
+// For seekers
+export const getMyReferrals = async (req, res) => {
+  try {
+
+    // Ensure only seeker can access
+    if (req.user.role !== "Seeker") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied"
+      });
+    }
+
+    const referrals = await Referral.find({
+      candidateId: req.user._id
+    })
+      .populate("referrerId", "name email") // 👈 get referrer details
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      referrals
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 
 
 

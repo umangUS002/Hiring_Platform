@@ -25,6 +25,10 @@ export const AppContextProvider = (props) => {
     const [referrals, setReferrals] = useState([]);
     const [referralsRec, setReferralsRec] = useState([]);
 
+    const [myReferrals, setMyReferrals] = useState([]);
+
+    const [namee, setNamee] = useState("");
+
     const fetchReferrals = async () => {
         try {
             if (!token) return; // don't call if no token
@@ -51,31 +55,57 @@ export const AppContextProvider = (props) => {
         }
     };
 
-
     const fetchReferralsRec = async (skill = "", experience = "") => {
-    try {
-        const { data } = await axios.get(
-            `${backendUrl}/api/referral/filter`,
-            {
-                params: {
-                    skill,
-                    experience
-                },
-                headers: {
-                    Authorization: `Bearer ${token}`
+        try {
+            const { data } = await axios.get(
+                `${backendUrl}/api/referral/filter`,
+                {
+                    params: {
+                        skill,
+                        experience
+                    },
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 }
+            );
+
+            if (data.success) {
+                setReferralsRec(data.referrals);
             }
-        );
 
-        if (data.success) {
-            setReferralsRec(data.referrals);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to filter referrals");
         }
+    };
 
-    } catch (error) {
-        toast.error(error.response?.data?.message || "Failed to filter referrals");
-    }
-};
+    const fetchMyReferrals = async () => {
+        try {
 
+            if (!token) return;
+
+            const { data } = await axios.get(
+                `${backendUrl}/api/referral/my-referrals`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (data.success) {
+                setMyReferrals(data.referrals);
+            } else {
+                setMyReferrals([]);
+            }
+
+        } catch (error) {
+            toast.error(
+                error.response?.data?.message || "Failed to fetch applications"
+            );
+            setMyReferrals([]);
+        }
+    };
 
 
     useEffect(() => {
@@ -97,7 +127,8 @@ export const AppContextProvider = (props) => {
 
     const value = {
         showLogin, setShowLogin, token, setToken, role, setRole,
-        backendUrl, referrals, fetchReferrals, axios: axiosInstance, referralsRec, fetchReferralsRec
+        backendUrl, referrals, fetchReferrals, axios: axiosInstance, referralsRec, fetchReferralsRec, setNamee, namee,
+        myReferrals, setMyReferrals, fetchMyReferrals
     }
 
     return (
