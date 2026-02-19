@@ -57,16 +57,16 @@ function ReferralsTableItem({ ref, fetchReferrals, index }) {
 
 
   return (
-    <tr className='border-y border-gray-300'>
-      <th className='px-2 py-4'>{index}</th>
+    <tr className='text-center border-y border-gray-300'>
+      <th className='text-center px-2 py-4'>{index}</th>
       {/* <th className='px-2 py-4'>{candidateId}</th> */}
-      <td className='px-2 py-4'>{name}</td>
-      <td className='px-2 py-4'>{contact}</td>
-      <td className='px-2 py-4'>{email}</td>
-      <td className='px-2 py-4 max-sm:hidden'>{RefDate.toDateString()}</td>
-      <td className="px-2 py-4 text-xs">
+      <td className='text-center px-2 py-4'>{name}</td>
+      <td className='text-center px-2 py-4'>{contact}</td>
+      <td className='text-center px-2 py-4'>{email}</td>
+      <td className='text-center px-2 py-4 max-sm:hidden'>{RefDate.toDateString()}</td>
+      <td className="text-center px-2 py-4 text-xs">
         <span
-          className={`px-3 py-1 rounded-full font-medium ${getStatusStyle(
+          className={`text-center px-3 py-1 rounded-full font-medium ${getStatusStyle(
             ref.status
           )}`}
         >
@@ -74,7 +74,7 @@ function ReferralsTableItem({ ref, fetchReferrals, index }) {
             status.slice(1)}
         </span>
       </td>
-      <td className="px-2 py-4">
+      <td className="text-center px-2 py-4">
         <a
           href={resumeUrl}
           target="_blank"

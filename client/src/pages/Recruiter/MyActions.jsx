@@ -60,15 +60,15 @@ function MyActions() {
 
                   <td className="px-4 py-3">{index + 1}</td>
 
-                  <td className="px-4 py-3">
+                  <td className="text-center px-4 py-3">
                     {action.referralId?.name}
                   </td>
 
-                  <td className="px-4 py-3">
+                  <td className="text-center px-4 py-3">
                     {action.referralId?.experience} yrs
                   </td>
 
-                  <td className="px-4 py-3">
+                  <td className="text-center px-4 py-3">
                     {action.referralId?.skills?.map((skill, i) => (
                       <span
                         key={i}
@@ -79,7 +79,7 @@ function MyActions() {
                     ))}
                   </td>
 
-                  <td className="px-4 py-3">
+                  <td className="text-center px-4 py-3">
                     {action.decision ? (
                       <span
                         className={`px-3 py-1 text-xs font-semibold rounded-full capitalize
@@ -96,18 +96,18 @@ function MyActions() {
                         {action.decision}
                       </span>
                     ) : (
-                      <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-500">
+                      <span className="text-center px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-500">
                         No Action
                       </span>
                     )}
                   </td>
 
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-center">
                     <a
                       href={action.referralId?.resumeUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-blue-600 underline"
+                      className="text-center text-blue-600 underline"
                     >
                       View
                     </a>
@@ -117,7 +117,7 @@ function MyActions() {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="text-center py-6">
+                <td colSpan="6" className="text-center text-center py-6">
                   No actions taken yet
                 </td>
               </tr>

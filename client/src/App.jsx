@@ -34,6 +34,7 @@ function App() {
 
         {token && role === "Recruiter" && (
           <Route path="/recruiterDash" element={<RecruiterDashBoard />} >
+            <Route index element={<AllReferralsRec />} />
             <Route path='my-actions' element={<MyActions />} /> 
             <Route path='all-referrals' element={<AllReferralsRec />} /> 
           </Route>
@@ -42,12 +43,14 @@ function App() {
 
         {token && role === "Seeker" && (
           <Route path="/seekerDash" element={<SeekerDashboard />} >
+            <Route index element={<MyReferrals />} />
             <Route path='my-referrals' element={<MyReferrals/>} />
           </Route>
         )}
 
         {token && role === "Referer" && (
           <Route path='/refererDash' element={<RefererDashBoard />} > 
+            <Route index element={<AllReferrals />} />
             <Route path='submit-referrals' element={<SubmitReferral />} /> 
             <Route path='all-referrals' element={<AllReferrals />} /> 
           </Route>

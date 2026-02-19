@@ -23,7 +23,7 @@ function SeekerTableItem({ referral, index }) {
     .toLocaleDateString();
 
   return (
-    <tr className="border-t hover:bg-gray-50 text-sm align-middle">
+    <tr className="text-center border-t hover:bg-gray-50 text-sm align-middle">
 
       {/* Index */}
       <td className="px-6 py-5 text-center text-gray-500">

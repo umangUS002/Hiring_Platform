@@ -8,7 +8,9 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ["Seeker", "Recruiter", "Referer", "Admin"]
-  }
+  },
+  otp: String,
+  otpExpiry: Date
 }, { timestamps: true });
 
 userSchema.pre("save", async function (next) {

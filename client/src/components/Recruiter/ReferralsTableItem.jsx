@@ -30,7 +30,7 @@ function ReferralsTableItem({ referral, index }) {
 
 
     return (
-        <tr className='border-b hover:bg-gray-50'>
+        <tr className='text-center border-b hover:bg-gray-50'>
 
             <td className='px-4 py-3'>{index + 1}</td>
 

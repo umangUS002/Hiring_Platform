@@ -17,6 +17,7 @@ export const AppContextProvider = (props) => {
         return config;
     });
 
+    const [showOtpLogin, setShowOtpLogin] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
 
     const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -27,7 +28,7 @@ export const AppContextProvider = (props) => {
 
     const [myReferrals, setMyReferrals] = useState([]);
 
-    const [namee, setNamee] = useState("");
+    const [name, setName] = useState("");
 
     const fetchReferrals = async () => {
         try {
@@ -111,7 +112,9 @@ export const AppContextProvider = (props) => {
     useEffect(() => {
         const savedToken = localStorage.getItem("token");
         const savedRole = localStorage.getItem("role");
+        const savedName = localStorage.getItem("name");
 
+        if (savedName) setName(savedName);
         if (savedToken) {
             setToken(savedToken);
         }
@@ -122,13 +125,15 @@ export const AppContextProvider = (props) => {
     }, []);
 
     useEffect(() => {
-        fetchReferrals();
-    }, []);
+        if (token) {
+            fetchReferrals();
+        }
+    }, [token]);
 
     const value = {
         showLogin, setShowLogin, token, setToken, role, setRole,
-        backendUrl, referrals, fetchReferrals, axios: axiosInstance, referralsRec, fetchReferralsRec, setNamee, namee,
-        myReferrals, setMyReferrals, fetchMyReferrals
+        backendUrl, referrals, fetchReferrals, axios: axiosInstance, referralsRec, fetchReferralsRec, setName, name,
+        myReferrals, setMyReferrals, fetchMyReferrals, showOtpLogin, setShowOtpLogin
     }
 
     return (

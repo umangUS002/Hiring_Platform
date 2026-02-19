@@ -21,7 +21,7 @@ function MyReferrals() {
         <table className="w-full text-sm text-gray-600">
 
           <thead className="bg-gray-100 text-xs uppercase">
-            <tr>
+            <tr className="text-center">
               <th className="px-4 py-4">#</th>
               <th className="px-4 py-4">Referrer</th>
               <th className="px-4 py-4">Experience</th>
