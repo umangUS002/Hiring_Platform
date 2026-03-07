@@ -127,6 +127,7 @@ export const AppContextProvider = (props) => {
     useEffect(() => {
         if (token) {
             fetchReferrals();
+            fetchMyReferrals();
         }
     }, [token]);
 

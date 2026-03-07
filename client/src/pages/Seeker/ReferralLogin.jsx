@@ -80,7 +80,7 @@ function ReferralLogin() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="cursor-pointer w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
           Login & Continue
         </button>
