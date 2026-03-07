@@ -21,12 +21,13 @@ function VerifyCandidate() {
         if (data.candidateId) {
 
           const isLoggedIn = localStorage.getItem("token");
-
-          if (!isLoggedIn) {
-            navigate(`/referral-login/${token}`);
-          } else {
-            navigate(`/complete-profile/${token}`);
-          }
+          navigate(`/referral-login/${token}`);
+          
+          // if (!isLoggedIn) {
+          //   navigate(`/referral-login/${token}`);
+          // } else {
+          //   navigate(`/complete-profile/${token}`);
+          // }
 
         } else {
           navigate(`/register/${token}`);

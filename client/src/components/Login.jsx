@@ -196,7 +196,7 @@ function Login() {
 
                         <button
                             type='submit'
-                            className='bg-blue-600 w-full cursor-pointer text-white py-2 rounded-full mt-6'
+                            className='bg-blue-600 w-full cursor-pointer text-white py-2 rounded-full mt-6 cursor-pointer'
                         >
                             {state === 'Login' ? 'Login' : 'Create Account'}
                         </button>

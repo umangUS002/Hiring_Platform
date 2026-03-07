@@ -90,21 +90,21 @@ function ReferralsTableItem({ referral, index }) {
 
                 <button
                     onClick={() => takeDecision("shortlisted")}
-                    className="bg-green-600 text-white px-3 py-1 rounded text-xs"
+                    className="bg-green-600 text-white px-3 py-1 rounded text-xs cursor-pointer"
                 >
                     Shortlist
                 </button>
 
                 <button
                     onClick={() => takeDecision("rejected")}
-                    className="bg-red-600 text-white px-3 py-1 rounded text-xs"
+                    className="bg-red-600 text-white px-3 py-1 rounded text-xs cursor-pointer"
                 >
                     Reject
                 </button>
 
                 <button
                     onClick={() => takeDecision("hold")}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded text-xs"
+                    className="bg-yellow-500 text-white px-3 py-1 rounded text-xs cursor-pointer"
                 >
                     Hold
                 </button>
