@@ -68,7 +68,7 @@ function Login() {
                     localStorage.setItem("role", data.user.role);
                     localStorage.setItem("name", data.user.name);
 
-                    setNamee(data.user.name);
+                    setName(data.user.name);
                     setToken(data.token);
                     setRole(data.user.role);
 

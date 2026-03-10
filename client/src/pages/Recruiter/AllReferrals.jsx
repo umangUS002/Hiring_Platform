@@ -4,14 +4,16 @@ import ReferralsTableItem from '../../components/Recruiter/ReferralsTableItem';
 
 function AllReferralsRec() {
 
-    const { referralsRec, fetchReferralsRec } = useContext(AppContext);
+    const { referralsRec, fetchReferralsRec, token } = useContext(AppContext);
 
     const [skill, setSkill] = useState("");
     const [exp, setExp] = useState("");
 
     useEffect(() => {
-        fetchReferralsRec();
-    }, []);
+        if(token){
+            fetchReferralsRec();
+        }
+    }, [token]);
 
     const handleFilter = () => {
         fetchReferralsRec(skill, exp);

@@ -3,45 +3,65 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 export const AppContext = createContext();
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+const axiosInstance = axios.create({
+    baseURL: backendUrl
+});
+
+// attach interceptor once
+axiosInstance.interceptors.request.use((config) => {
+
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+});
 export const AppContextProvider = (props) => {
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
-    const axiosInstance = axios.create({
-        baseURL: backendUrl
-    });
-    axiosInstance.interceptors.request.use((config) => {
-        const savedToken = localStorage.getItem("token");
-        if (savedToken) {
-            config.headers.Authorization = `Bearer ${savedToken}`;
-        }
-        return config;
-    });
+    // const backendUrl = import.meta.env.VITE_BACKEND_URL
+    // const axiosInstance = axios.create({
+    //     baseURL: backendUrl
+    // });
 
     const [showOtpLogin, setShowOtpLogin] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
 
     const [token, setToken] = useState(localStorage.getItem("token") || null);
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState(localStorage.getItem("role") || "");
+    const [name, setName] = useState(localStorage.getItem("name") || "");
 
     const [referrals, setReferrals] = useState([]);
     const [referralsRec, setReferralsRec] = useState([]);
 
     const [myReferrals, setMyReferrals] = useState([]);
 
-    const [name, setName] = useState("");
+//     useEffect(() => {
+//     const interceptor = axiosInstance.interceptors.request.use((config) => {
+
+//         const token = localStorage.getItem("token");
+
+//         if (token) {
+//             config.headers.Authorization = `Bearer ${token}`;
+//         }
+
+//         return config;
+//     });
+
+//     return () => {
+//         axiosInstance.interceptors.request.eject(interceptor);
+//     };
+// }, []);
 
     const fetchReferrals = async () => {
         try {
-            if (!token) return; // don't call if no token
 
-            const { data } = await axios.get(
-                `${backendUrl}/api/referral/all`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
+            if (!token) return;
+
+            const { data } = await axiosInstance.get("/api/referral/all");
 
             if (data.success) {
                 setReferrals(data.referrals || []);
@@ -58,18 +78,10 @@ export const AppContextProvider = (props) => {
 
     const fetchReferralsRec = async (skill = "", experience = "") => {
         try {
-            const { data } = await axios.get(
-                `${backendUrl}/api/referral/filter`,
-                {
-                    params: {
-                        skill,
-                        experience
-                    },
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
+            if (!token) return;
+            const { data } = await axiosInstance.get("/api/referral/filter", {
+                params: { skill, experience }
+            });
 
             if (data.success) {
                 setReferralsRec(data.referrals);
@@ -85,14 +97,7 @@ export const AppContextProvider = (props) => {
 
             if (!token) return;
 
-            const { data } = await axios.get(
-                `${backendUrl}/api/referral/my-referrals`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
+            const { data } = await axiosInstance.get("/api/referral/my-referrals");
 
             if (data.success) {
                 setMyReferrals(data.referrals);
@@ -125,11 +130,27 @@ export const AppContextProvider = (props) => {
     }, []);
 
     useEffect(() => {
-        if (token) {
-            fetchReferrals();
-            fetchMyReferrals();
-        }
-    }, [token]);
+    if (!token) return;
+
+    if (role === "Recruiter") {
+        fetchReferralsRec();   // recruiter dashboard
+    }
+
+    else if (role === "Referer") {
+        fetchReferrals();
+        //fetchMyReferrals();
+    }
+
+    else if (role === "Seeker") {
+        fetchMyReferrals();
+    }
+
+    else if (role === "Admin") {
+        fetchReferrals();
+        fetchReferralsRec();
+    }
+
+}, [token, role]);
 
     const value = {
         showLogin, setShowLogin, token, setToken, role, setRole,
