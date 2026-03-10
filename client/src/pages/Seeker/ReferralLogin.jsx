@@ -29,6 +29,7 @@ function ReferralLogin() {
         return toast.error("This account is not eligible for referral verification.");
       }
 
+      localStorage.setItem("name", data.user.name);
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.user.role);
 
